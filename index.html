@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<script type="text/javascript" src="comunas.js"></script> <!-- creates states. -->
+	<link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+	<div id="tooltip"></div><!-- div to hold tooltip. -->
+	<svg width="1460" height="800" id="statesvg"></svg> <!-- svg to hold the map. -->
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+<script>
+
+	function tooltipHtml(n, d){	/* function to create html content string in tooltip div. */
+		return "<h4>" + n + "</h4><table>" +
+			"<tr><td>Porcentaje más bajo de tráfico</td><td>" + (d.low) + " % </td></tr>" +
+			"<tr><td>Porcentaje más alto de tráfico</td><td>" + (d.avg) + " % </td></tr>" +
+			"<tr><td>Porcentaje promedio</td><td>" + (d.high) + " % </td></tr>" +
+			"</table>";
+	}
+	
+	var sampleData = {};	/* Sample random data. */
+
+	["SB","PH","MP","CE","RC","QL","LE","PA","SM","LG","SN","PR","NU","LR","LP","SR","LA","EB","CN","IN","EC","PD","LP","CN","ST","RN","QN","PN","LC","VT","LB","HC","PI","PT","LF","MA"]
+		.forEach(function(d){ 
+			var low = Math.round(100*Math.random()), 
+					mid = Math.round(100*Math.random()), 
+					high = Math.round(100*Math.random());
+			sampleData[d] = { low:d3.min([low,mid,high]), 
+												high:d3.max([low,mid,high]), 
+												avg:Math.round((low+mid+high)/3),
+												color:d3.interpolate("#598dcd", "#8ecfed")(low/100)}; 
+		});
+
+	
+	/* draw states on id #statesvg */	
+	comunas.draw("#statesvg", sampleData, tooltipHtml);
+</script>
+--!>
+</body>
